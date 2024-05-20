@@ -1,16 +1,32 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import './App.css';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Login from './components/Login';
+import Registeration from './components/Registeration';
+import Dashboard from './components/Dashboard';
+import { AuthGuard, LoginAuth } from './components/Guard';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      hello
+      <RouterProvider router={router} />
     </>
   )
 }
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <LoginAuth><Login /></LoginAuth>
+  },
+  {
+    path: '/register',
+    element: <LoginAuth><Registeration /></LoginAuth>
+  },
+  {
+    path: '/dashboard',
+    element: <AuthGuard><Dashboard /></AuthGuard>
+  },
+])
 
 export default App
