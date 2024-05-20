@@ -1,77 +1,50 @@
-import axios from 'axios';
 import React, { useState } from 'react';
+import axios from 'axios';
 import style from './styles.module.css';
+import { FormControl, OutlinedInput, IconButton, InputAdornment, InputLabel, Button, FormHelperText } from '@mui/material';
+import { Email, Person, Visibility, VisibilityOff } from '@mui/icons-material';
+import loginside from '../assets/loginside.png'
 import { Link, useNavigate } from 'react-router-dom';
-import { FaUser, FaLock } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
 
 const Registeration = () => {
   const [data, setdata] = useState({ name: '', email: '', password: '' });
   const [userError, setUserError] = useState('');
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handledata = (e) => {
-    setdata({ ...data, [e.target.name]: e.target.value });
-  }
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handledata = (e) => { setdata({ ...data, [e.target.name]: e.target.value }) }
 
   const validateUser = () => {
     const UserRegex = /^[a-zA-Z0-9_]{3,16}$/;
-    if (!UserRegex.test(data.name)) {
-      setUserError('Username should only contain small letter, capital letter and digits');
-      console.log(data);
-      console.log(userError);
-    }
-    else {
-      setUserError('');
-    }
+    (!UserRegex.test(data.name)) ? setUserError('Username should only contain small letter, capital letter and digits') : setUserError('')
   };
   const validateEmail = () => {
     const EmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
-    if (!EmailRegex.test(data.email)) {
-      setEmailError('Invalid email address');
-      console.log(data);
-      console.log(emailError);
-
-    }
-    else {
-      setEmailError('');
-    }
+    (!EmailRegex.test(data.email)) ? setEmailError('Invalid email address') : setEmailError('')
   };
-
   const validatePassword = () => {
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
-    if (!passwordRegex.test(data.password)) {
-      setPasswordError('Password must be at least 8 characters long and Contain one upper case letter and a special character');
-      console.log(data);
-      console.log(passwordError);
-
-    }
-    else {
-      setPasswordError('');
-    }
+    (!passwordRegex.test(data.password)) ? setPasswordError('Password must be at least 8 characters long and Contain one upper case letter and a special character') : setPasswordError('')
   };
 
   const handleSubmit = (e) => {
     validateEmail();
     validatePassword();
     validateUser();
+    e.preventDefault();
     if (userError === '' && passwordError == '' && emailError === '') {
-      console.log('success')
-      e.preventDefault();
       setdata({ name: '', email: '', password: '' });
       postapi();
-    }
-    else {
-      e.preventDefault();
     }
   };
 
   const postapi = async () => {
     const res = await axios.post('https://jobs-api-d70i.onrender.com/api/v1/auth/register', data);
     if (res) {
-      navigate('/login');
+      navigate('/');
     }
   }
 
@@ -79,52 +52,64 @@ const Registeration = () => {
   return (
     <div className={style.lg}>
       <div className={style.container}>
-        <form className={style.form} onSubmit={handleSubmit}>
-          <h1 className={style.h1}>REGISTRATION</h1>
-          <div className={style.ibox}>
-            <input
-              id='name'
-              className={style.input}
-              type="text"
-              placeholder="Username"
+        <span><img src={loginside} /></span>
+        <form>
+          <h1>Sign Up</h1>
+
+          <FormControl variant="outlined" error={userError === '' ? false : true}>
+            <InputLabel htmlFor="name">User Name</InputLabel>
+            <OutlinedInput
+              id="name"
               name='name'
-              value={data.name}
-              required
-              onChange={(e) => { handledata(e); }}
+              type='text'
+              label="User Name"
+              onChange={handledata}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton><Person /></IconButton>
+                </InputAdornment>
+              }
             />
-            <FaUser className={style.icon} />
-          </div>
-          <span className={style.err}>{userError}</span>
-          <div className={style.ibox}>
-            <input
-              id='email'
-              className={style.input}
-              type="text"
-              placeholder="Email"
+            {userError && <FormHelperText>{userError}</FormHelperText>}
+          </FormControl>
+
+          <FormControl variant="outlined" error={emailError === '' ? false : true}>
+            <InputLabel htmlFor="email">Email</InputLabel>
+            <OutlinedInput
+              id="email"
               name='email'
-              value={data.email}
-              required
-              onChange={(e) => { handledata(e); }}
+              type='text'
+              label="email"
+              onChange={handledata}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton><Email /></IconButton>
+                </InputAdornment>
+              }
             />
-            <MdEmail className={style.icon} />
-          </div>
-          <span className={style.err}>{emailError}</span>
-          <div className={style.ibox}>
-            <input
-              id='pswd'
-              className={style.input}
-              type="password"
-              placeholder="Password"
+            {emailError && <FormHelperText>{emailError}</FormHelperText>}
+          </FormControl>
+
+          <FormControl variant="outlined" error={passwordError === '' ? false : true}>
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <OutlinedInput
+              id="password"
               name='password'
-              value={data.password}
-              required
-              onChange={(e) => { handledata(e); }}
+              type={showPassword ? 'text' : 'password'}
+              label="Password"
+              onChange={handledata}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton onClick={handleClickShowPassword}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
             />
-            <FaLock className={style.icon} />
-          </div>
-          <span className={style.err}>{passwordError}</span>
-          <button className={style.button} type="submit">REGISTER</button>
-          <p>Already Created the account. That's great now <Link className={style.link} to='/login'>Login</Link></p>
+            {passwordError && <FormHelperText>{passwordError}</FormHelperText>}
+          </FormControl>
+          <Button onClick={handleSubmit} variant="outlined" className={style.btn}>Sign Up</Button>
+          <p>Already Created the account. That's great now <Link className={style.link} to='/'>Login</Link></p>
         </form>
       </div>
     </div>
