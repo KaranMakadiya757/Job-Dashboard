@@ -11,11 +11,10 @@ const Login = () => {
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
     const url = import.meta.env.VITE_API_URL
+    const navigate = useNavigate();
 
 
-    const handleClickShowPassword = () => setShowPassword((show) => !show);
 
     const validateEmail = () => {
         const EmailRegex = /^([a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/;
@@ -26,32 +25,25 @@ const Login = () => {
         (!passwordRegex.test(data.password)) ? setPasswordError('Password must be at least 8 characters long and Contain one upper case letter and a special character') : setPasswordError('')
     };
 
-    
-    const handledata = (e) => {
-        setdata({ ...data, [e.target.name]: e.target.value });
-    }
 
-    const handleSubmit = (e) => {
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+    const handledata = (e) => { setdata({ ...data, [e.target.name]: e.target.value }) }
+
+    
+    const handleSubmit = async (e) => {
         validateEmail();
         validatePassword();
         e.preventDefault();
         if (emailError === '' && passwordError === '') {
             setdata({ email: '', password: '' });
-            postapi();
+            const res = await axios.post(`${url}/auth/login`, data);
+            if (res) {
+                sessionStorage.setItem('token', res.data.token);
+                navigate('/dashboard');
+            }
         }
     };
 
-    const postapi = async () => {
-        const res = await axios.post(`https://jobs-api-d70i.onrender.com/api/v1/auth/login`, data);
-        if (res) {
-            sessionStorage.setItem('token', res.data.token);
-            navigate('/dashboard');
-        }
-    }
-
-    useEffect(() => {
-        console.log(url)
-    },[])
     return (
         <div className={style.lg}>
             <div className={style.container}>
@@ -94,6 +86,7 @@ const Login = () => {
                         />
                         {passwordError && <FormHelperText>{passwordError}</FormHelperText>}
                     </FormControl>
+
                     <Button onClick={handleSubmit} variant="outlined" className={style.btn}>Login</Button>
                     <p>Don't have an account? <Link className={style.link} to='/register'>Sign Up</Link></p>
                 </form>

@@ -12,10 +12,9 @@ const Registeration = () => {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const url = import.meta.env.VITE_API_URL
   const navigate = useNavigate();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handledata = (e) => { setdata({ ...data, [e.target.name]: e.target.value }) }
 
   const validateUser = () => {
     const UserRegex = /^[a-zA-Z0-9_]{3,16}$/;
@@ -30,24 +29,24 @@ const Registeration = () => {
     (!passwordRegex.test(data.password)) ? setPasswordError('Password must be at least 8 characters long and Contain one upper case letter and a special character') : setPasswordError('')
   };
 
-  const handleSubmit = (e) => {
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handledata = (e) => { setdata({ ...data, [e.target.name]: e.target.value }) }
+
+
+  const handleSubmit = async (e) => {
     validateEmail();
     validatePassword();
     validateUser();
     e.preventDefault();
     if (userError === '' && passwordError == '' && emailError === '') {
       setdata({ name: '', email: '', password: '' });
-      postapi();
+      const res = await axios.post(`${url}/auth/register`, data);
+      if (res) {
+        navigate('/');
+      }
     }
   };
-
-  const postapi = async () => {
-    const res = await axios.post('https://jobs-api-d70i.onrender.com/api/v1/auth/register', data);
-    if (res) {
-      navigate('/');
-    }
-  }
-
 
   return (
     <div className={style.lg}>
