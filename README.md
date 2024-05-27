@@ -1,6 +1,6 @@
 # Job Dashboard
 
-This App helps you add all the job position in a tabular form
+This App helps you add all the job position in a tabular form. Here i have used the API to store and retrieve data
 
 ## features :
 - Create Job
