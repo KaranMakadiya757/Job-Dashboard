@@ -36,9 +36,11 @@ const Login = () => {
         e.preventDefault();
         if (emailError === '' && passwordError === '') {
             setdata({ email: '', password: '' });
+            console.log('sucess')
             const res = await axios.post(`${url}/auth/login`, data);
             if (res) {
                 sessionStorage.setItem('token', res.data.token);
+                sessionStorage.setItem('username', res.data.user.name);
                 navigate('/dashboard');
             }
         }
@@ -65,7 +67,7 @@ const Login = () => {
                                 </InputAdornment>
                             }
                         />
-                        {emailError && <FormHelperText>{emailError}</FormHelperText>}
+                        {emailError && <FormHelperText className={style.err}>{emailError}</FormHelperText>}
                     </FormControl>
 
                     <FormControl variant="outlined" error={passwordError === '' ? false : true}>
@@ -84,7 +86,7 @@ const Login = () => {
                                 </InputAdornment>
                             }
                         />
-                        {passwordError && <FormHelperText>{passwordError}</FormHelperText>}
+                        {passwordError && <FormHelperText className={style.err}>{passwordError}</FormHelperText>}
                     </FormControl>
 
                     <Button onClick={handleSubmit} variant="outlined" className={style.btn}>Login</Button>

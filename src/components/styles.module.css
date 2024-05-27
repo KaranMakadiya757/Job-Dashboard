@@ -49,7 +49,14 @@
             align-items: center;
         }
 
-        .btn{
+        .err {
+            font-size: x-small;
+            padding: 0;
+            margin: 0;
+            text-align: justify;
+        }
+
+        .btn {
             height: 40px;
         }
 
@@ -64,100 +71,115 @@
 /*        DASHBOARD PAGE        */
 
 .dash {
-    height: 99vh;
-    width: 100vw;
+    /* height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(215, 215, 215, 0.586); */
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+.body {
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(215, 215, 215, 0.586);
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-image: url("../assets/Dash.jpg");
-    background-size: cover;
-    background-position: center;
+    flex-direction: column;
+
+
+    .up {
+        width: 100%;
+        display: flex;
+        padding: 20px 50px;
+        box-sizing: border-box;
+        gap: 20px;
+
+        .span {
+            display: flex;
+            padding: 10px;
+            align-items: center;
+            gap: 20px;
+        
+            h2 {
+                margin: 0;
+                padding: 0;
+                color: rgb(84, 84, 84);
+            }
+        }
+
+        .inp{
+            background-color: #fff;
+        }
+    }
+
+    .down {
+        width: 100%;
+        padding: 20px 50px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        overflow: scroll;
+    }
+
 }
 
-.title {
+
+
+/*       VIEW DATA      */
+
+.viewdata {
     display: flex;
-    color: rgba(240, 248, 255, 0.777);
-    gap: 80%;
-    justify-content: center;
+    box-shadow: 0 0 10px rgba(77, 77, 77, 0.44);
+    background-color: #fff;
+    justify-content: space-between;
+    padding: 20px 30px;
+    border-radius: 10px;
+    gap: 20px;
     align-items: center;
-}
 
-.action {
-    display: inline-block;
-    outline: 0;
-    border: none;
-    cursor: pointer;
-    height: 32px;
-    padding: 0px 16px;
-    border-radius: 50px;
-    background-color: rgb(200, 199, 199);
-    color: #000000;
-    font-size: 12px;
-    font-weight: 500;
-    margin: 3px;
-}
+    span {
+        display: flex;
+        flex-direction: column;
+        width: 20%;
+    }
 
-.logout {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-}
+    label {
+        color: gray;
+        font-size: x-small;
+    }
 
-.adddata {
-    margin: 30px 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    backdrop-filter: blur(50px);
-}
+    input {
+        border: 1px solid lightgray;
+        outline: none;
+        width: 100%;
+        font-size: medium;
+        font-weight: bold;
+        margin: 5px 0;
+        padding: 0;
+        border-radius: 10px;
+        padding: 5px;
+    }
 
-.inputa {
-    margin: 10px 30px;
-    height: 30px;
-    background: transparent;
-    border: none;
-    outline: none;
-    color: rgba(240, 248, 255, 0.674);
-    border-bottom: 1px solid white;
-}
+    p {
+        font-size: medium;
+        font-weight: bold;
+        padding: 5px 0;
+        margin: 0;
+    }
 
-.inputb {
-    height: 30px;
-    background: transparent;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid white;
-    color: rgba(240, 248, 255, 0.674);
-}
+    button {
+        padding: 10px;
+        font-size: large;
+        background: transparent;
+        border: none;
+        outline: none;
+        border-radius: 10px;
 
-.inputa::placeholder {
-    color: rgba(240, 248, 255, 0.674);
-}
-
-.table {
-    position: relative;
-    background-color: transparent;
-    backdrop-filter: blur(75px);
-    border-radius: 5px;
-    box-shadow: 5px 5px 1px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 90vw;
-}
-
-.thead {
-    font-size: x-large;
-
-}
-
-.td {
-    padding: 15px;
-    display: table-cell;
-    text-align: center;
-    color: rgba(240, 248, 255, 0.777);
-}
-
-.tbody {
-    font-size: medium;
+        &:hover {
+            background-color: #eaeaeaa9;
+        }
+    }
 }

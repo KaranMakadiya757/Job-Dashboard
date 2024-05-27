@@ -25,7 +25,8 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <AuthGuard><Dashboard /></AuthGuard>
+    // element: <AuthGuard><Dashboard /></AuthGuard>
+    element: <Dashboard />
   },
 ])
 

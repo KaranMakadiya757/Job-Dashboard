@@ -4,12 +4,9 @@ import { Navigate } from 'react-router-dom';
 export function AuthGuard({ children }) {
     let auth = undefined;
     if (!(sessionStorage.getItem('token') === null)) {
-        console.log(sessionStorage.getItem('token'))
-        console.log('yes')
         auth = true;
     }
     if (sessionStorage.getItem('token') === null) {
-        console.log('no')
         auth = false;
     }
 

@@ -86,7 +86,7 @@ const Registeration = () => {
                 </InputAdornment>
               }
             />
-            {emailError && <FormHelperText>{emailError}</FormHelperText>}
+            {emailError && <FormHelperText className={style.err}>{emailError}</FormHelperText>}
           </FormControl>
 
           <FormControl variant="outlined" error={passwordError === '' ? false : true}>
@@ -105,7 +105,7 @@ const Registeration = () => {
                 </InputAdornment>
               }
             />
-            {passwordError && <FormHelperText>{passwordError}</FormHelperText>}
+            {passwordError && <FormHelperText className={style.err}>{passwordError}</FormHelperText>}
           </FormControl>
           <Button onClick={handleSubmit} variant="outlined" className={style.btn}>Sign Up</Button>
           <p>Already Created the account. That's great now <Link className={style.link} to='/'>Login</Link></p>

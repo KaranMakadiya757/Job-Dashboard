@@ -2,12 +2,12 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import style from './styles.module.css';
+import { TextField, Button } from '@mui/material';
+import ViewData from './ViewData';
 
 function Dashboard() {
     const [data, setdata] = useState([]);
     const [newdata, setnewdata] = useState({ company: '', position: '' });
-    const [add, setadd] = useState(false);
-    const [edit, setedit] = useState(null);
     const nevigate = useNavigate();
     const header = {
         headers: {
@@ -15,39 +15,8 @@ function Dashboard() {
         }
     }
 
-    /*  ------------------------------  EDIT BUTTON HANDLE    ------------------------------  */
-
-    const handleEdit = async (idd) => {
-        const res = await axios.get(`https://jobs-api-d70i.onrender.com/api/v1/jobs/${idd}`, header);
-        console.log(res.data.job)
-        setnewdata(res.data.job);
-        setedit(idd);
-        setadd(false);
-    };
-
-    const handleSave = async (id) => {
-        await axios.patch(`https://jobs-api-d70i.onrender.com/api/v1/jobs/${id}`, newdata, header);
-        getapi();
-        setedit(null);
-    };
-
-    const handleeditChange = (e) => {
-        let { value, name } = e.target;
-        setnewdata({ ...newdata, [name]: value });
-    };
-
-    /*  ------------------------------  DELETE BUTTON HANDLE    ------------------------------  */
-
-    const handledelete = async (id) => {
-        await axios.delete(`https://jobs-api-d70i.onrender.com/api/v1/jobs/${id}`, header);
-        getapi();
-    }
-
     /*  ------------------------------  ADD BUTTON HANDLE    ------------------------------  */
 
-    const handleadd = () => {
-        setadd(!add);
-    }
     const handlechange = (e) => {
         let { value, name } = e.target;
         setnewdata({ ...newdata, [name]: value });
@@ -79,7 +48,7 @@ function Dashboard() {
     }
     const postapi = async () => {
         try {
-            const res = await axios.post('https://jobs-api-d70i.onrender.com/api/v1/jobs', newdata, header);
+            await axios.post('https://jobs-api-d70i.onrender.com/api/v1/jobs', newdata, header);
             getapi();
         } catch (err) {
             console.log(err)
@@ -91,110 +60,38 @@ function Dashboard() {
     }, [])
 
     return (
-        <div className={style.dash}>
-            <div >
-                <div className={style.title}>
-                    <h1>Dashboard</h1>
-                    <button className={style.action} onClick={() => handleadd()}>Add</button>
-                </div>
-                {add && (
-                    <div className={style.adddata}>
-
-                        {/* ADDING NEW ENTRIES INTO THE TABLE */}
-                        <form onSubmit={(e) => handlesubmit(e)}>
-                            <input
-                                type="text"
-                                name="company"
-                                placeholder='Company Name'
-                                value={newdata.company}
-                                className={style.inputa}
-                                onChange={(e) => handlechange(e)}
-                                required
-                            />
-
-                            <input
-                                type="text"
-                                name="position"
-                                placeholder='Position'
-                                value={newdata.position}
-                                className={style.inputa}
-                                onChange={(e) => handlechange(e)}
-                                required
-                            />
-
-                            <input
-                                type="submit"
-                                value='Save'
-                                className={style.action}
-                            />
-                        </form>
-                    </div>
-                )}
-
-                {/* MAIN TABLE */}
-                <table className={style.table}>
-                    <thead className={style.thead}>
-
-                        <tr>
-                            <th className={style.td}>Company</th>
-                            <th className={style.td}>Position</th>
-                            <th className={style.td}>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody className={style.tbody}>
-                        {/* MAPPING THROUGH THE DATA ARRAY TO PRINT EACH ROW */}
-                        {data.map((d) =>
-                            <tr key={d._id}>
-                                <td className={style.td}>
-                                    {
-                                        // EDIT BUTTON FUNCTIONALITY
-                                        edit === d._id ? (
-                                            <input
-                                                className={style.inputb}
-                                                type="text"
-                                                placeholder='Company'
-                                                name='company'
-                                                value={newdata.company}
-                                                onChange={handleeditChange}
-                                            />
-                                        ) : (d.company)
-                                    }
-                                </td>
-                                <td className={style.td}>
-                                    {
-                                        // EDIT BUTTON FUNCTIONALITY
-                                        edit === d._id ? (
-                                            <input
-                                                className={style.inputb}
-                                                type="text"
-                                                placeholder='Position'
-                                                name='position'
-                                                value={newdata.position}
-                                                onChange={handleeditChange}
-                                            />
-                                        ) : (d.position)
-                                    }
-                                </td>
-                                <td className={style.td}>
-                                    {
-                                        //  EDIT/SAVE BUTTON
-                                        edit === d._id ? (
-                                            <button className={style.action} onClick={() => handleSave(d._id)}>Save</button>
-                                        ) : (
-                                            <button className={style.action} onClick={() => handleEdit(d._id)}>Edit</button>
-                                        )
-                                    }
-
-                                    {/* DELETE BUTTON */}
-                                    <button className={style.action} onClick={() => handledelete(d._id)}>Delete</button>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-                <div className={style.logout}>
-                    <button className={style.action} onClick={handlelogout}>LogOut</button>
-                </div>
+        <div className={style.body}>
+            <div className={style.up}>
+                <span span className={style.span}>
+                    <h2>Welcome, {sessionStorage.getItem('username')}</h2>
+                </span>
+                <span style={{flexGrow:1}}></span>
+                <span className={style.span}>
+                    <TextField
+                        id="company"
+                        name="company"
+                        label="Company Name"
+                        variant="outlined"
+                        size='small'
+                        value={newdata.company}
+                        onChange={handlechange}
+                        className={style.inp}
+                    />
+                    <TextField
+                        id="position"
+                        name="position"
+                        label="Position"
+                        variant="outlined"
+                        size='small'
+                        value={newdata.position}
+                        onChange={handlechange}
+                        className={style.inp}
+                    />
+                    <Button variant="outlined" onClick={handlesubmit}> + Add</Button>
+                </span>
+            </div>
+            <div className={style.down}>
+                {data.map(d => <ViewData key={d._id} data={d} api={getapi} />)}
             </div>
         </div>
     );
